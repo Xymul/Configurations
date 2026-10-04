@@ -1,0 +1,17 @@
+[*]
+end_of_line = lf
+tab_width = 4
+indent_size = tab
+indent_style = space
+charset = utf-8
+
+[*.{c,cpp,cxx,cc,h,hpp}]
+tab_width = 2
+indent_size = tab
+
+[*.go]
+indent_style = tab
+
+[*.{js,ts}]
+tab_width = 2
+indent_size = tab
