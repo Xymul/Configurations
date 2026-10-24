@@ -20,7 +20,7 @@ return {
       },
 
       performance = {
-        max_view_entries = 8,
+--        max_view_entries = 8,
         max_width = 50,
         min_width = 20,
       },
