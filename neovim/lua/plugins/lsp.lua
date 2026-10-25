@@ -1,4 +1,4 @@
--- TODO: set&config ensure installs: luals, clangd, gopls, ty, basepyright 
+-- TODO: set&config ensure installs: luals, clangd, gopls, typescript-lsp, basepyright
 local lspconfig_setup = {
   ensure_installed = { "lua_ls" }
 }
@@ -46,6 +46,7 @@ return {
       }
     })
 
+    -- FIXME: .luarc.json doesn't work
     vim.lsp.config("lua_ls", {
       root_markers = { ".luarc.json", ".luarc.jsonc", ".git" },
       settings = {
@@ -62,6 +63,18 @@ return {
       }
     })
 
-    vim.lsp.enable({ "clangd", "lua_ls" })
+    vim.lsp.config("gopls", {
+      root_markers = { "go.work", "go.mod", ".git" },
+      cmd = { "gopls" },
+      settings = {
+        gopls = {
+          unusedparams = true,
+        },
+        staticcheck = true,
+        gofumpt = true,
+      }
+    })
+
+    vim.lsp.enable({ "clangd", "lua_ls", "gopls" })
   end,
 }
