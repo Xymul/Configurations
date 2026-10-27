@@ -500,18 +500,206 @@ namespace A {
 
 ### extern语句
 
+#### 换行和缩进
+
+作用域的左花括号不换行：
+```c++
+extern "C" {
+}
+```
+
+`extern`作用域内不单独缩进：
+```c++
+extern "C" {
+void foo();
+}
+```
+
 ### 变量
+
+#### 对齐
+
+不对变量统一赋值时的等号对齐有要求，但限于格式化器，行为就是强制不对齐。
+
+#### 指针和引用
+
+单一变量的`*`和`&`紧贴类型：
+```c++
+int* p;
+```
+
+多个变量的`*`和`&`紧贴变量：
+```c++
+int *p, &r;
+```
+
+聚合声明的`*`紧贴变量：
+```c++
+int (*p)(double);
+```
+
+#### 命名风格
+
+无论是否是`const/constexpr/constinit`或`volitale`变量，是否是全局或局部变量，均为全小写命名。
 
 ### lambda表达式
 
+#### 换行和缩进
+
+lambda的左花括号不换行：
+```c++
+auto lambda = []() -> int {
+};
+```
+
+<!--TODO: 这里需要优化lambda的配置项，有描述不一致的地方和格式化错误的地方-->
+lambda表达式内缩进一次：
+```c++
+auto lambda = []() -> int {
+  return 0;
+};
+```
+
+#### 空格插入
+
+<!--TODO: 这里需要优化lambda的配置项，目前允许在模板列表前插入空格-->
+只在表示返回类型的箭头符号两侧和返回值类型两侧插入空格
+```c++
+[]<typename T>(int p) -> int { };
+```
+
 ### 布尔表达式
+
+#### 换行和对齐
+
+如果换行，三元表达式的`?`和`:`对齐
+```c++
+pred ? if_true
+     : if_false
+```
+
+如果`?`换行，那么`?`要对齐到条件：
+```c++
+auto b = std::is_xxx_v<expr>
+         ? if_true
+         : if_false;
+```
+
+换行时，逻辑运算符至于行首，且对齐到第一个条件
+```c++
+if (aaa && bbb || ccc
+    && ddd)
+```
 
 ### 初始化
 
+#### 换行、空格、缩进和对齐
+
+列表初始化的左花括号与变量不分离：
+```c++
+Class c{};
+```
+
+初始化列表的两侧不插入空格：
+```c++
+Class c{1, 2, 3};
+```
+
+列表初始化若要换行，每一个参数单独一行且对齐，并缩进一次：
+```c++
+Class c{
+  1,
+  2,
+  3
+};
+```
+
+非列表初始化（圆括号初始化）的要求同函数调用。
+
 ### 流程控制语句
+
+#### 换行和缩进
+
+流程控制语句的左大括号均不换行：
+```c++
+if/switch/do/while/for () {
+}
+```
+
+`else`不单独一行：
+```c++
+if {
+} else {
+}
+```
+
+`case`标签不相对switch缩进，但case标签下的内容缩进：
+```c++
+switch (o) {
+case 1:
+  print(1);
+default:
+  print(0);
+}
+```
 
 ### 模板
 
+#### 换行、缩进和对齐、空格
+
+声明参数列表时，`template`后不加空格：
+```c++
+template<>
+template<template<typename T> U>
+```
+
+`template<...>`始终独立一行：
+```c++
+template<typename T, typename D>
+struct Container;
+```
+
+参数列表换行时，以`typename`或`class`关键字为准对齐：
+```c++
+template<typename T
+         typename U>
+```
+
+尖括号的换行法则类似函数参数列表圆括号的换行法则。
+
+#### 命名风格
+
+类型或非类型模板形参均用大驼峰命名法。
+
 ### requires语句
 
+#### 换行和缩进
+
+requires语句的左花括号不换行：
+```c++
+requires (T t) {
+}
+```
+
+模板声明处的requires语句要缩进：
+```c++
+template<typename T>
+  requires std::is_intergral_v<T>
+```
+
+`requires`后面的概念或条件在换行时，对齐，方式同布尔表达式。
+
+`requires`关键字要始终和参数列表置于同一行上：
+```c++
+template<typename T>
+  requires B<T> && C<T>
+           && requires (T t) {
+             expr(t);
+           }
+```
+
 ### 注释
+
+命名空间的尾部、if-endif预处理指令的尾部都要附上注释。
+
+行尾的注释无需对齐，但本风格不推荐大量的行尾注释，更偏好注释单独成行。
