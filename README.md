@@ -2,4 +2,5 @@
 
 ## Directories
 
-/CodeStyle - my code style for programming
+- /CodeStyle - my code style for programming
+- /neovim - my neovim config
