@@ -68,7 +68,9 @@ return {
       cmd = { "gopls" },
       settings = {
         gopls = {
-          unusedparams = true,
+          analyses = {
+            unusedparams = true,
+          }
         },
         staticcheck = true,
         gofumpt = true,
